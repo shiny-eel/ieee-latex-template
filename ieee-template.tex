@@ -7,12 +7,52 @@
 %\IEEEoverridecommandlockouts
 % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 \usepackage{cite}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+
+\usepackage{float}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+    
+    
+\usepackage{color}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\DeclareMathAlphabet{\pazocal}{OMS}{zplm}{m}{n}
+\newcommand{\Vc}{\mathcal{V}}
+
+ \newcommand{\listingsfont}{\ttfamily}
+
+\lstdefinestyle{mycodestyle}{
+%    basicstyle=\listingsfont,
+    backgroundcolor=\color{backcolour},
+%    linewidth=16cm,
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\scriptsize\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\small\linespread{0.9}\listingsfont,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+
+\lstset{style=mycodestyle}
+    
+    
 \begin{document}
 
 \title{Reflective Report\\
@@ -41,7 +81,67 @@ component, formatting, style, styling, insert
 This document is a model and instructions for \LaTeX.
 Please observe the conference page limits. 
 
-\section{Ease of Use}
+\section{Equations}
+As noted before, the current standing solution to the Inverse Problem of constructing HSP electrograms from BSPs is a mathematical one. In essence, the solution is based on a transfer matrix ($A$) that maps HSPs to BSPs.
+
+\begin{equation*}
+  \Phi_B = A \Phi_H
+\end{equation*}
+
+where $\Phi_H$ is the vector of heart potentials, $\Phi_B$ is the equivalent body potential vector. While this equation looks simple, the implementation is not. The first complication is with the modelling of the electric potential field that is the human torso. This is done through the application of Green's Second Theorem upon a Laplace equation \cite{He2004}. It requires the discretisation of both the heart surface and the body surface into, essentially, discrete meshes - triangular elements. This method is used in all of the work done in solving the Inverse Problem.
+
+\section{Writing Code Snippets}
+
+Using the above scenario to further explain - the basic structure of objects follows that of the major nouns: The {\tt Board} object is responsible for relaying where {\tt Sections} (either {\tt Houses} or {\tt Stores}) are in relation to each other. {\tt Sections} handle messages to do with the seeds they hold. 
+
+Please don't use the \verb|{eqnarray}| equation environment. Use
+\verb|{align}| or \verb|{IEEEeqnarray}| instead. The \verb|{eqnarray}|
+environment leaves unsightly spaces around relation symbols.
+
+\section{Writing Code Blocks}
+	The {\tt stage cost} function was modified as follows:
+		\begin{lstlisting}[language=Octave]
+power = [2, 5];
+if(x==0)
+    if(a==0)
+        cost= 0; %Complete this line
+    else
+        cost= U + power(a)*p(t);
+    end
+else
+    if(a==0)
+        cost= D;
+    else
+        cost= power(a)*p(t); %Complete this line
+    end
+end
+end
+		\end{lstlisting}
+
+\section{Tables}
+
+Finally, the most important piece of relevant work is of Malik et al \cite{Malik2018}. This is the research we are building from. A TDNN is used to reconstruct a single HSP electrogram from a single BSP. A good feature of this paper is the use of real-world data - data from the Ann Arbor library \cite{AnnArbor}. This approach is proven to work well on both normal heartbeats as well as those with ventricular flutter (a precursor to fatal forms of tachycardia) \cite{Malik2018}, which gives it significant clinical implications.
+
+
+\begin{table*}[t]
+\centering
+\caption{TDNN Parameter Comparison}
+\label{table:hi}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Method} & \textbf{\textit{Delay Window}}& \textbf{\textit{Neuron Number}}& \textbf{\textit{Training Signal Duration}} \\
+\hline
+Malik & $\leq20$ms & $<15$ & $10$ seconds  \\
+\hline
+Por\'ee & $50$ms & $20$ & $10$ beats  \\
+\hline
+\end{tabular}
+\end{table*}
+
+
+
+Table \ref{table:hi} compares the parameters used for the respective TDNNs in the two referenced papers. Malik uses an exhaustive search to tune the parameters of the TDNN, whereas Por\'ee uses bootstrap analyses among other optimisation methods. Overall, a comparison of the final parameters used is interesting. The training data duration is similar, but \cite{Malik2018} finds more success with smaller delay windows and neuron numbers compared to Por\'ee.
+
 
 \subsection{Maintaining the Integrity of the Specifications}
 

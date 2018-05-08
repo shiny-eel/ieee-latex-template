@@ -1,0 +1,17 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdftex 2018.4.9)  29 APR 2018 17:52
+entering extended mode
+ restricted \write18 enabled.
+ file:line:error style messages enabled.
+ %&-line parsing enabled.
+**biblio.bib
+(./biblio.bib
+Missing character: There is no Ã in font cmr10!
+Missing character: There is no © in font cmr10!
+)
+*
+! Emergency stop.
+<*> biblio.bib
+              
+End of file on the terminal!
+
+!  ==> Fatal error occurred, no output PDF file produced!
